@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { HUNGER_PER_HOUR } from '../constants';
+import { eventSubscribe, eventUnsubscribe } from '../events';
 import { Clock } from '../models/Clock';
 import { generatePilot, Pilot } from '../models/Pilot';
 import { generatePlanet, Planet } from '../models/Planet';
@@ -39,7 +40,6 @@ export const InGameContextProvider: React.FC<{
     generateShip(undefined, undefined, undefined)
   );
 
-  // @TODO Trigger via event.
   const onTimeChange = useCallback(
     (timeDelta: Time) => {
       const hungerChange = timeToHours(timeDelta) * HUNGER_PER_HOUR;
@@ -50,6 +50,14 @@ export const InGameContextProvider: React.FC<{
     },
     [pilot, setPilot]
   );
+
+  useEffect(() => {
+    eventSubscribe('clock:time-change', onTimeChange);
+
+    return () => {
+      eventUnsubscribe('clock:time-change', onTimeChange);
+    };
+  }, [onTimeChange]);
 
   return (
     <InGameContext.Provider

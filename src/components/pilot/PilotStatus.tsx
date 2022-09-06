@@ -10,7 +10,9 @@ interface PilotStatusProps {
 export const PilotStatus: React.FC<PilotStatusProps> = ({ pilot }) => {
   return (
     <div className="pilotStatus">
+      <ProgressBar label="Fatigue" value={pilot.fatigue} />
       <ProgressBar label="Health" value={pilot.health} />
+      <ProgressBar label="Hunger" value={pilot.hunger} />
     </div>
   );
 };
