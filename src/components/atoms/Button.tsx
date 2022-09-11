@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -7,7 +7,6 @@ interface ButtonProps {
 
 export const Button: React.FC<ButtonProps> = ({ onClick, children }) => {
   const handleClick = useCallback(() => {
-    console.log("[CPM] Caught click!"); // @DEBUG
     onClick();
   }, [onClick]);
 

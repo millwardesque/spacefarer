@@ -10,8 +10,8 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({
   clock: { time },
 }) => {
   return (
-    <span>
-      {time.years}y, {time.days}d, {time.hours}h
-    </span>
+    <strong>
+      Date: {time.years}y, {time.days}d, {time.hours}h
+    </strong>
   );
 };

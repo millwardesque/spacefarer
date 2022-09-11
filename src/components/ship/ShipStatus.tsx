@@ -1,9 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { Ship } from "../../models/Ship";
-import { ShipEngine } from "./ShipEngine";
-import { ShipPower } from "./ShipPower";
-import { ShipShields } from "./ShipShields";
+import { Ship } from '../../models/Ship';
+import { ShipComponentSummary } from './ShipComponentSummary';
+import { PowerSourceSummary } from './PowerSourceSummary';
 
 interface ShipStatusProps {
   ship: Ship;
@@ -12,9 +11,11 @@ interface ShipStatusProps {
 export const ShipStatus: React.FC<ShipStatusProps> = ({ ship }) => {
   return (
     <div className="shipStatus">
-      Your ship has <ShipPower ship={ship} />,{" "}
-      <ShipEngine engine={ship.engine} />, and <ShipShields ship={ship} />.
-      Toilet still works, though.
+      <h1>Ship</h1>
+      <PowerSourceSummary powerSource={ship.powerSource} />
+      <ShipComponentSummary heading="Engine" shipComponent={ship.engine} />
+      <ShipComponentSummary heading="Shields" shipComponent={ship.shields} />
+      Oh, and the toilet still works.
     </div>
   );
 };

@@ -33,7 +33,7 @@ export const Sidebar: React.FC = () => {
   }, [actions]);
 
   return (
-    <>
+    <div className="sidebar">
       <ClockDisplay clock={clock} />
       <ShipStatus ship={ship} />
       <PilotStatus pilot={pilot} />
@@ -44,6 +44,6 @@ export const Sidebar: React.FC = () => {
       {actionResult && (
         <div className="actionResult">{actionResult.message}</div>
       )}
-    </>
+    </div>
   );
 };
