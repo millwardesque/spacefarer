@@ -26,9 +26,7 @@
 
 ## Pilot
 
-- Hunger decreases health once > 100%
 - Fatigue decreases chance of failing an action
-- Health == 0 => Game over.
 
 ## Other
 
