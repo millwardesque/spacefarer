@@ -24,6 +24,12 @@
 - Search environment
 - Return to ship
 
+## Pilot
+
+- Hunger decreases health once > 100%
+- Fatigue decreases chance of failing an action
+- Health == 0 => Game over.
+
 ## Other
 
 Power assignment grid
@@ -45,7 +51,7 @@ Fun name generation
 
 # Technical:
 
-Swap MemoryRouter for BrowserRouter
+Swap BrowserRouter for MemoryRouter
 eslint
 prettier
 More type-safe event system

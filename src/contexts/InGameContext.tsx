@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { HUNGER_PER_HOUR } from '../constants';
+import {
+  FATIGUE_PER_HOUR,
+  HEALTH_PER_FAMISHED_HOUR,
+  HUNGER_PER_HOUR,
+} from '../constants';
 import { eventSubscribe, eventUnsubscribe } from '../events';
 import { Clock } from '../models/Clock';
 import { generatePilot, Pilot } from '../models/Pilot';
@@ -9,6 +13,7 @@ import { generatePlanet, Planet } from '../models/Planet';
 import { generateShip, Ship } from '../models/Ship';
 import { timeToHours, Time } from '../models/Time';
 import { GAMEOVER_ROUTE } from '../routes';
+import { clamp } from '../utils';
 
 interface InGameContextInterface {
   clock: Clock;
@@ -44,21 +49,41 @@ export const InGameContextProvider: React.FC<{
   );
 
   const onTimeChange = useCallback(
-    (timeDelta: Time) => {
-      const hungerChange = timeToHours(timeDelta) * HUNGER_PER_HOUR;
+    ({ detail }: CustomEvent) => {
+      const timeDelta = detail.timeDelta as Time;
+      const timeInHours = timeToHours(timeDelta);
+      const fatigueChange = timeInHours * FATIGUE_PER_HOUR;
+      const hungerChange = timeInHours * HUNGER_PER_HOUR;
+
+      const newFatigue = pilot.fatigue + fatigueChange;
+      const newHunger = pilot.hunger + hungerChange;
+      const newHealth =
+        pilot.health - (newHunger > 1.0 ? HEALTH_PER_FAMISHED_HOUR : 0);
+
+      console.log(
+        '[CPM] Time in hours',
+        timeDelta,
+        timeInHours,
+        hungerChange,
+        pilot.hunger,
+        newHunger,
+        clamp(newHunger)
+      ); // @DEBUG
       setPilot({
         ...pilot,
-        hunger: pilot.hunger + hungerChange,
+        fatigue: clamp(newFatigue),
+        health: clamp(newHealth),
+        hunger: clamp(newHunger),
       });
     },
     [pilot, setPilot]
   );
 
   useEffect(() => {
-    if (pilot.hunger >= 1.0) {
+    if (pilot.health <= 0.0) {
       navigateTo(GAMEOVER_ROUTE);
     }
-  }, [pilot.hunger]);
+  }, [pilot.health]);
 
   useEffect(() => {
     eventSubscribe('clock:time-change', onTimeChange);

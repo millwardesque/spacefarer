@@ -28,7 +28,9 @@ export const Sidebar: React.FC = () => {
 
   const actionList = useMemo(() => {
     return actions.map((action) => (
-      <Button onClick={() => handleActionClick(action)}>{action.name}</Button>
+      <Button key={action.name} onClick={() => handleActionClick(action)}>
+        {action.name}
+      </Button>
     ));
   }, [actions]);
 

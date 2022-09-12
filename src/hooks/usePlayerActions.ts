@@ -29,12 +29,6 @@ export function usePlayerActions(): PlayerAction[] {
     clock.addHour();
     setClock(clock);
 
-    setPilot({
-      ...pilot,
-      fatigue: pilot.fatigue + 0.1,
-      hunger: pilot.hunger + 0.1,
-    });
-
     const engineFindProbability = 0.1;
     const powerFindProbability = 0.3;
     if (Math.random() <= engineFindProbability) {
