@@ -1,20 +1,19 @@
-import React, { useContext, useMemo } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './App.css';
-import { InGameContextProvider } from './contexts/InGameContext';
-import { PageLayout } from './components/atoms/PageLayout';
-import { Sidebar } from './components/atoms/Sidebar';
-import { PlanetDisplay } from './components/planet/PlanetDisplay';
+import { GameOverPage } from './components/pages/GameOverPage';
+import { InGamePage } from './components/pages/InGamePage';
+import { GAMEOVER_ROUTE, INGAME_ROUTE } from './routes';
 
 const App: React.FC = () => {
-  const sidebar = useMemo(() => <Sidebar />, []);
-
   return (
-    <InGameContextProvider>
-      <PageLayout leftSide={sidebar}>
-        <PlanetDisplay />
-      </PageLayout>
-    </InGameContextProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path={INGAME_ROUTE} element={<InGamePage />} />
+        <Route path={GAMEOVER_ROUTE} element={<GameOverPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

@@ -1,10 +1,5 @@
 # In progress
 
-Use power source to power other components
-
-- Reference from ship component to ship
-- Show power assignment grid
-
 # In-game
 
 ## Powerable components
@@ -21,6 +16,8 @@ Use power source to power other components
 - Get into ship
 - Repair component
 - Install component
+- Uninstall component
+- Swap component
 - Heal
 - Repair ship
 - Make food (with power source and food-generator)
@@ -29,6 +26,8 @@ Use power source to power other components
 
 ## Other
 
+Power assignment grid
+Map with user-selectable destinations
 Prompt player which item to keep OR inventory?
 Should we keep hardcoded component-specific slots on the ship, or have a general array of them?
 Day / Night time
@@ -46,6 +45,7 @@ Fun name generation
 
 # Technical:
 
+Swap MemoryRouter for BrowserRouter
 eslint
 prettier
 More type-safe event system

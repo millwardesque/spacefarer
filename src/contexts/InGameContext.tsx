@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { HUNGER_PER_HOUR } from '../constants';
 import { eventSubscribe, eventUnsubscribe } from '../events';
@@ -7,6 +8,7 @@ import { generatePilot, Pilot } from '../models/Pilot';
 import { generatePlanet, Planet } from '../models/Planet';
 import { generateShip, Ship } from '../models/Ship';
 import { timeToHours, Time } from '../models/Time';
+import { GAMEOVER_ROUTE } from '../routes';
 
 interface InGameContextInterface {
   clock: Clock;
@@ -33,6 +35,7 @@ export const InGameContext = React.createContext<InGameContextInterface>({
 export const InGameContextProvider: React.FC<{
   children: JSX.Element[] | JSX.Element;
 }> = ({ children }) => {
+  const navigateTo = useNavigate();
   const [clock, setClock] = useState(new Clock());
   const [pilot, setPilot] = useState(generatePilot());
   const [planet, setPlanet] = useState(generatePlanet('Arrakis'));
@@ -50,6 +53,12 @@ export const InGameContextProvider: React.FC<{
     },
     [pilot, setPilot]
   );
+
+  useEffect(() => {
+    if (pilot.hunger >= 1.0) {
+      navigateTo(GAMEOVER_ROUTE);
+    }
+  }, [pilot.hunger]);
 
   useEffect(() => {
     eventSubscribe('clock:time-change', onTimeChange);
