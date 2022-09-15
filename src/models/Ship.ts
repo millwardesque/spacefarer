@@ -1,3 +1,4 @@
+import { Coordinates } from './Coordinates';
 import { Engine } from './Engine';
 import { PowerSource } from './PowerSource';
 import { Shields } from './Shields';
@@ -5,17 +6,20 @@ import { ShipComponent } from './ShipComponent';
 
 export interface Ship {
   engine: Engine | undefined;
+  position: Coordinates;
   powerSource: PowerSource | undefined;
   shields: Shields | undefined;
 }
 
 export function generateShip(
   engine: Engine | undefined,
+  position: Coordinates,
   powerSource: PowerSource | undefined,
   shields: undefined
 ): Ship {
   return {
     engine,
+    position,
     powerSource,
     shields,
   };

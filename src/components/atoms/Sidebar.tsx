@@ -38,7 +38,7 @@ export const Sidebar: React.FC = () => {
     <div className="sidebar">
       <ClockDisplay clock={clock} />
       <ShipStatus ship={ship} />
-      <PilotStatus pilot={pilot} />
+      <PilotStatus pilot={pilot} ship={ship} />
       <div className="actions">
         <h1>Actions</h1>
         <div>{actionList}</div>

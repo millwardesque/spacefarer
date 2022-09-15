@@ -1,6 +1,13 @@
 # In progress
 
-# In-game
+Danger loop
+
+- Actions queue
+- Stores one per hour
+- Can be cleared and pre-empted (e.g. if player encounters an alien)
+- Alien can interrupt walk back to ship
+
+# In-game Stuff
 
 ## Powerable components
 
@@ -26,7 +33,8 @@
 
 ## Pilot
 
-- Fatigue decreases chance of failing an action
+- Fatigue decreases chance of succeeding at an action
+- Can have suit, which quantifies player's metrics like health, _but_ ... <TBD, slower travel / explore speed?>
 
 ## Other
 
@@ -36,16 +44,13 @@ Prompt player which item to keep OR inventory?
 Should we keep hardcoded component-specific slots on the ship, or have a general array of them?
 Day / Night time
 Threats
-Player can have suit, which quantifies player's metrics like health, _but_ ... <TBD, slower travel / explore speed?>
 Ship has divertible power between different subsystems
 Actions further from home can be more dangerous
 Action: Separate Explore from Return to Ship actions
 Engine can allow the ship to travel elsewhere on the planet)
-Clamp hunger, fatigue, health to 1.0
-Make consequences for full hunger bar
-Make consequences for empty health bar
-Ship needs hull strength
+Ship: Add hull strength
 Fun name generation
+Layo asked to set pilot name on start
 
 # Technical:
 

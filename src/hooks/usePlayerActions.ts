@@ -1,6 +1,8 @@
 import { useCallback, useContext, useMemo } from 'react';
 
+import { HOURS_PER_WALKED_UNIT } from '../constants';
 import { InGameContext } from '../contexts/InGameContext';
+import { distanceBetween, generateCoordinates } from '../models/Coordinates';
 import { generateRandomEngine } from '../models/Engine';
 import {
   generateRandomPowerSource,
@@ -25,9 +27,32 @@ export function usePlayerActions(): PlayerAction[] {
   const { clock, setClock, pilot, setPilot, ship, setShip } =
     useContext(InGameContext);
 
+  const onReturnToShip = useCallback((): PlayerActionResult => {
+    const distanceToShip = distanceBetween(pilot.position, ship.position);
+    const timeToReturn = distanceToShip * HOURS_PER_WALKED_UNIT;
+    for (let i = 0; i < timeToReturn; ++i) {
+      clock.addHour();
+    }
+    setClock(clock);
+
+    setPilot({
+      ...pilot,
+      position: { ...ship.position },
+    });
+
+    return {
+      message: `You made it back to your ship, safe and sound.`,
+    };
+  }, [clock, pilot, setClock, setPilot, ship]);
+
   const onExplore = useCallback((): PlayerActionResult => {
     clock.addHour();
     setClock(clock);
+
+    setPilot({
+      ...pilot,
+      position: generateCoordinates(pilot.position.x, pilot.position.y + 1),
+    });
 
     const engineFindProbability = 0.1;
     const powerFindProbability = 0.3;
@@ -82,6 +107,13 @@ export function usePlayerActions(): PlayerAction[] {
       name: 'Explore',
       action: onExplore,
     });
+
+    if (distanceBetween(pilot.position, ship.position) > 0) {
+      actions.push({
+        name: 'Return to ship',
+        action: onReturnToShip,
+      });
+    }
 
     if (ship.engine && canComponentBePowered(ship, ship.engine)) {
       actions.push({

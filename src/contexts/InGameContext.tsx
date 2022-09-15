@@ -8,6 +8,7 @@ import {
 } from '../constants';
 import { eventSubscribe, eventUnsubscribe } from '../events';
 import { Clock } from '../models/Clock';
+import { generateCoordinates } from '../models/Coordinates';
 import { generatePilot, Pilot } from '../models/Pilot';
 import { generatePlanet, Planet } from '../models/Planet';
 import { generateShip, Ship } from '../models/Ship';
@@ -29,11 +30,16 @@ interface InGameContextInterface {
 export const InGameContext = React.createContext<InGameContextInterface>({
   clock: new Clock(),
   setClock: (_) => {},
-  pilot: generatePilot(),
+  pilot: generatePilot(generateCoordinates(0, 0)),
   setPilot: (_) => {},
   planet: generatePlanet('DEFAULT'),
   setPlanet: (_) => {},
-  ship: generateShip(undefined, undefined, undefined),
+  ship: generateShip(
+    undefined,
+    generateCoordinates(0, 0),
+    undefined,
+    undefined
+  ),
   setShip: (_) => {},
 });
 
@@ -42,10 +48,10 @@ export const InGameContextProvider: React.FC<{
 }> = ({ children }) => {
   const navigateTo = useNavigate();
   const [clock, setClock] = useState(new Clock());
-  const [pilot, setPilot] = useState(generatePilot());
+  const [pilot, setPilot] = useState(generatePilot(generateCoordinates(0, 0)));
   const [planet, setPlanet] = useState(generatePlanet('Arrakis'));
   const [ship, setShip] = useState(
-    generateShip(undefined, undefined, undefined)
+    generateShip(undefined, generateCoordinates(0, 0), undefined, undefined)
   );
 
   const onTimeChange = useCallback(
@@ -60,15 +66,6 @@ export const InGameContextProvider: React.FC<{
       const newHealth =
         pilot.health - (newHunger > 1.0 ? HEALTH_PER_FAMISHED_HOUR : 0);
 
-      console.log(
-        '[CPM] Time in hours',
-        timeDelta,
-        timeInHours,
-        hungerChange,
-        pilot.hunger,
-        newHunger,
-        clamp(newHunger)
-      ); // @DEBUG
       setPilot({
         ...pilot,
         fatigue: clamp(newFatigue),
