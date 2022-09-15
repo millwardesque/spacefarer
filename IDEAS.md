@@ -2,10 +2,8 @@
 
 Danger loop
 
-- Actions queue
-- Stores one per hour
-- Can be cleared and pre-empted (e.g. if player encounters an alien)
-- Alien can interrupt walk back to ship
+- Return to ship only travels one unit closer to ship
+- Random chance of meeting alien when exploring OR returning to ship
 
 # In-game Stuff
 
