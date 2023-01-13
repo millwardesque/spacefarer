@@ -2,8 +2,9 @@
 
 Danger loop
 
-- Return to ship only travels one unit closer to ship
-- Random chance of meeting alien when exploring OR returning to ship
+- Alien can: Attack the player if hungry, ignore the player if not, disengage after N turns
+- Bug: Time event is fired and handled with previous clock's values. Defer event until states have fully changed
+- Alien picture
 
 # In-game Stuff
 

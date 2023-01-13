@@ -7,7 +7,9 @@ import {
   HUNGER_PER_HOUR,
 } from '../constants';
 import { eventSubscribe, eventUnsubscribe } from '../events';
+import { Alien } from '../models/Alien';
 import { Clock } from '../models/Clock';
+import { generateAlien } from '../models/Alien';
 import { generateCoordinates } from '../models/Coordinates';
 import { generatePilot, Pilot } from '../models/Pilot';
 import { generatePlanet, Planet } from '../models/Planet';
@@ -17,6 +19,8 @@ import { GAMEOVER_ROUTE } from '../routes';
 import { clamp } from '../utils';
 
 interface InGameContextInterface {
+  aliens: Alien[];
+  setAliens: (aliens: Alien[]) => void;
   clock: Clock;
   setClock: (clock: Clock) => void;
   pilot: Pilot;
@@ -28,6 +32,8 @@ interface InGameContextInterface {
 }
 
 export const InGameContext = React.createContext<InGameContextInterface>({
+  aliens: [],
+  setAliens: (_) => {},
   clock: new Clock(),
   setClock: (_) => {},
   pilot: generatePilot(generateCoordinates(0, 0)),
@@ -47,6 +53,7 @@ export const InGameContextProvider: React.FC<{
   children: JSX.Element[] | JSX.Element;
 }> = ({ children }) => {
   const navigateTo = useNavigate();
+  const [aliens, setAliens] = useState([] as Alien[]);
   const [clock, setClock] = useState(new Clock());
   const [pilot, setPilot] = useState(generatePilot(generateCoordinates(0, 0)));
   const [planet, setPlanet] = useState(generatePlanet('Arrakis'));
@@ -65,6 +72,13 @@ export const InGameContextProvider: React.FC<{
       const newHunger = pilot.hunger + hungerChange;
       const newHealth =
         pilot.health - (newHunger > 1.0 ? HEALTH_PER_FAMISHED_HOUR : 0);
+
+      const alienFindProbability = 0.1;
+      for (let i = 0; i < timeInHours; i++) {
+        if (Math.random() < alienFindProbability) {
+          setAliens([...aliens, generateAlien(pilot.position)]);
+        }
+      }
 
       setPilot({
         ...pilot,
@@ -93,6 +107,8 @@ export const InGameContextProvider: React.FC<{
   return (
     <InGameContext.Provider
       value={{
+        aliens,
+        setAliens,
         clock,
         setClock,
         pilot,

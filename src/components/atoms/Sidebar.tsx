@@ -6,6 +6,7 @@ import {
   PlayerActionResult,
   usePlayerActions,
 } from '../../hooks/usePlayerActions';
+import { AlienDisplay } from '../alien/AlienSummary';
 import { PilotStatus } from '../pilot/PilotStatus';
 import { ShipStatus } from '../ship/ShipStatus';
 import { Button } from './Button';
@@ -15,7 +16,7 @@ export const Sidebar: React.FC = () => {
   const [actionResult, setActionResult] = useState<
     PlayerActionResult | undefined
   >(undefined);
-  const { clock, pilot, ship } = useContext(InGameContext);
+  const { aliens, clock, pilot, ship } = useContext(InGameContext);
   const actions = usePlayerActions();
 
   const handleActionClick = useCallback(
@@ -39,6 +40,8 @@ export const Sidebar: React.FC = () => {
       <ClockDisplay clock={clock} />
       <ShipStatus ship={ship} />
       <PilotStatus pilot={pilot} ship={ship} />
+      {aliens.length > 0 &&
+        aliens.map((alien) => <AlienDisplay key={alien.id} alien={alien} />)}
       <div className="actions">
         <h1>Actions</h1>
         <div>{actionList}</div>

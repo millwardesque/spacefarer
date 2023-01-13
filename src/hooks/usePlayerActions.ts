@@ -1,8 +1,15 @@
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 
 import { HOURS_PER_WALKED_UNIT } from '../constants';
 import { InGameContext } from '../contexts/InGameContext';
-import { distanceBetween, generateCoordinates } from '../models/Coordinates';
+import { triggerTimeChange } from '../models/Clock';
+import {
+  add,
+  directionFrom,
+  distanceBetween,
+  generateCoordinates,
+  multiplyByScalar,
+} from '../models/Coordinates';
 import { generateRandomEngine } from '../models/Engine';
 import {
   generateRandomPowerSource,
@@ -29,16 +36,24 @@ export function usePlayerActions(): PlayerAction[] {
 
   const onReturnToShip = useCallback((): PlayerActionResult => {
     const distanceToShip = distanceBetween(pilot.position, ship.position);
-    const timeToReturn = distanceToShip * HOURS_PER_WALKED_UNIT;
-    for (let i = 0; i < timeToReturn; ++i) {
-      clock.addHour();
-    }
-    setClock(clock);
+    const movementAmount = Math.min(
+      HOURS_PER_WALKED_UNIT * 1.0,
+      distanceToShip
+    );
+
+    const movement = multiplyByScalar(
+      directionFrom(pilot.position, ship.position),
+      movementAmount
+    );
+    const newPosition = add(pilot.position, movement);
 
     setPilot({
       ...pilot,
-      position: { ...ship.position },
+      position: newPosition,
     });
+
+    clock.addHour();
+    setClock(clock);
 
     return {
       message: `You made it back to your ship, safe and sound.`,

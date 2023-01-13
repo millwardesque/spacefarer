@@ -1,3 +1,5 @@
+export const ALIEN_TYPES = ["amphitra'x", 'blolos', 'xanagur'];
+
 export const DAYS_IN_YEAR = 365;
 export const HOURS_IN_DAY = 24;
 

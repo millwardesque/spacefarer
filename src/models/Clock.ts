@@ -1,7 +1,7 @@
 import { eventTrigger } from '../events';
 import { normalizeTime, Time } from './Time';
 
-function triggerTimeChange(timeDelta: Time): void {
+export function triggerTimeChange(timeDelta: Time): void {
   eventTrigger('clock:time-change', {
     detail: {
       timeDelta,
